@@ -1,0 +1,5 @@
+task_type: regression
+model_type: ridge_regression
+
+model:
+  alpha: 1.0            # higher = more regularization

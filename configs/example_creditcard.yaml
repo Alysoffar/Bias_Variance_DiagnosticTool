@@ -1,0 +1,11 @@
+# configs/example_creditcard.yaml - EXAMPLE: Credit Card Fraud Dataset
+# This is an EXAMPLE of how to configure the tool for a specific dataset.
+# Copy and customize this for your own projects.
+
+# Credit card fraud data settings
+data_path: "data/raw/creditcard.csv"
+target_column: "Class"
+drop_columns: ["Time"]  # Remove timestamp - not useful for model diagnostics
+
+task_type: null  # Let it auto-detect
+model_type: tree_classifier

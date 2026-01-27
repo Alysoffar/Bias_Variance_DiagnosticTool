@@ -1,0 +1,8 @@
+model_type: nn_classifier
+
+model:
+  hidden_units: [64, 32]
+  learning_rate: 0.001
+  l2: 0.001
+  epochs: 20
+  batch_size: 32

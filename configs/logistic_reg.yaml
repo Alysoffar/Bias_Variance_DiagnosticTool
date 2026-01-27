@@ -1,0 +1,6 @@
+model_type: logistic_regression
+
+model:
+  C: 1.0                # smaller C = stronger regularization
+  max_iter: 5000        # Increased for large/complex datasets
+  solver: 'lbfgs'       # Default solver

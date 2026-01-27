@@ -1,0 +1,49 @@
+# configs/default.yaml - GENERIC DEFAULT SETTINGS
+# This file contains ONLY tool settings that work for any dataset.
+# For your specific dataset, create a project-specific config and reference it in pipeline.py
+
+# ============================================================================
+# DATA SETTINGS - OVERRIDE THESE IN YOUR PROJECT-SPECIFIC CONFIG
+# ============================================================================
+data_path: null  # REQUIRED: Set to your CSV/JSON/Excel file path
+target_column: null  # REQUIRED: Name of target column in your data
+drop_columns: []  # Optional: List of columns to drop (e.g., ["id", "timestamp"])
+
+# ============================================================================
+# TASK & MODEL SETTINGS
+# ============================================================================
+task_type: null  # Auto-detect from data, or specify: "classification" or "regression"
+model_type: tree_classifier  # Override in model-specific config files
+
+# ============================================================================
+# DATA PROCESSING SETTINGS (apply to any dataset)
+# ============================================================================
+remove_duplicates: true
+handle_missing: true
+missing_value_strategy: "mean"  # Options: "mean", "median", "mode"
+encode_categorical: true  # Convert string columns to numeric
+encoding_strategy: "onehot"  # Options: "onehot" or "label"
+encode_target: true  # Convert target if it's strings
+scale_features: true  # Normalize features (important for linear models)
+scaler_type: "standard"  # Options: "standard" or "minmax"
+
+# ============================================================================
+# OUTPUT SETTINGS (configurable paths)
+# ============================================================================
+save_cleaned_data: false
+cleaned_data_path: "data/processed/cleaned_data.csv"
+output_figure_path: "outputs/figures/learning_curve.png"
+output_report_path: "outputs/reports/report.json"
+
+# ============================================================================
+# LEARNING CURVE & DIAGNOSIS SETTINGS
+# ============================================================================
+learning_curve:
+  sizes: [0.1, 0.3, 0.5, 0.7, 1.0]
+
+diagnosis:
+  gap_threshold: 0.1
+  high_error_threshold: 0.3
+  imbalance_threshold: 5.0  # Warn if minority class < 5%
+
+random_seed: 42

@@ -1,0 +1,5 @@
+task_type: regression
+model_type: lasso_regression
+
+model:
+  alpha: 0.1            # lasso is aggressive; keep alpha smaller

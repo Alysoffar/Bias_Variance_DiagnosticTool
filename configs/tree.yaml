@@ -1,0 +1,8 @@
+model_type: tree_classifier
+
+model:
+  # Limit capacity to avoid perfect memorization on small samples.
+  max_depth: 4
+  min_samples_split: 4
+  min_samples_leaf: 5
+  random_state: 42
