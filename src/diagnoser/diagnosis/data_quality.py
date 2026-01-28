@@ -42,7 +42,7 @@ def check_class_imbalance(Y, task_type, threshold=5.0):
         
         warning_msg = [
             "=" * 70,
-            "⚠  WARNING: HIGHLY IMBALANCED DATASET DETECTED!",
+            "[WARNING] HIGHLY IMBALANCED DATASET DETECTED!",
             "=" * 70,
             f"Class distribution: {class_dist}",
             f"Minority class: {minority_pct:.2f}% of data",

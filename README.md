@@ -1,17 +1,22 @@
 # Bias-Variance Diagnostic Tool
 
-A comprehensive Python toolkit for diagnosing and analyzing bias-variance tradeoffs in machine learning models through automated learning curve generation, model evaluation, and actionable recommendations.
+A comprehensive Python **library and toolkit** for diagnosing and analyzing bias-variance tradeoffs in machine learning models through automated learning curve generation, model evaluation, and actionable recommendations.
+
+**Now available as a reusable library!** Install and import into your own projects with a simple API.
 
 ## Table of Contents
 
+- [What's New](#whats-new)
 - [Overview](#overview)
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
-- [Usage](#usage)
+  - [As a Library (Recommended)](#as-a-library-recommended)
   - [Command Line Interface](#command-line-interface)
-  - [Python API](#python-api)
+- [Usage](#usage)
+  - [Library API](#library-api)
+  - [Command Line Interface](#command-line-interface-1)
   - [Configuration Files](#configuration-files)
 - [Supported Models](#supported-models)
 - [Output and Reports](#output-and-reports)
@@ -20,9 +25,66 @@ A comprehensive Python toolkit for diagnosing and analyzing bias-variance tradeo
 - [Contributing](#contributing)
 - [License](#license)
 
+## What's New
+
+### Library API (v0.2.0)
+
+The Bias-Variance Diagnoser is now a **reusable Python library**! You can install it and import it into your own projects.
+
+**New Features:**
+- [OK] **Simple API**: One function call - `run_diagnosis()` - does everything
+- [OK] **Structured Output**: Returns a `DiagnosisResult` dataclass with all metrics and paths
+- [OK] **Model Flexibility**: Load pre-trained models OR train from config
+- [OK] **Dataset Handling**: Automatically copies and processes your data
+- [OK] **Windows Compatible**: Fully tested on Windows paths
+- [OK] **Pip Installable**: Install with `pip install -e .`
+
+**New Files:**
+- `src/diagnoser/api.py` - Library API implementation
+- `LIBRARY_USAGE.md` - Complete library documentation
+- `examples/example_library_usage.py` - 6 working examples
+- `tests/test_library_api.py` - Library API test suite
+
+**Quick Example:**
+```python
+from diagnoser import run_diagnosis
+
+result = run_diagnosis(
+    dataset_path="data.csv",
+    model_name="ridge_regression",
+    label_column="target"
+)
+print(f"Diagnosis: {result.diagnosis_label}")
+```
+
+See [LIBRARY_USAGE.md](LIBRARY_USAGE.md) for complete documentation and [examples/example_library_usage.py](examples/example_library_usage.py) for working code.
+
 ## Overview
 
-The Bias-Variance Diagnostic Tool helps machine learning practitioners identify whether their models are suffering from high bias (underfitting), high variance (overfitting), or achieving a balanced fit. By automatically generating learning curves and running diagnostic checks, this tool provides:
+The Bias-Variance Diagnostic Tool helps machine learning practitioners identify whether their models are suffering from high bias (underfitting), high variance (overfitting), or achieving a balanced fit. 
+
+**NEW: Now available as a reusable Python library!** Import directly into your projects with a simple, clean API.
+
+### Use It Two Ways:
+
+1. **As a Library** (New!) - Import into your Python projects:
+   ```python
+   from diagnoser import run_diagnosis
+   
+   result = run_diagnosis(
+       dataset_path="your_data.csv",
+       model_name="ridge_regression",
+       label_column="target"
+   )
+   print(f"Diagnosis: {result.diagnosis_label}")
+   ```
+
+2. **As a CLI Tool** - Run from command line:
+   ```bash
+   python run.py --data data.csv --target Class --model tree_classifier
+   ```
+
+By automatically generating learning curves and running diagnostic checks, this tool provides:
 
 - **Automated Diagnosis**: Identify bias/variance issues through configurable thresholds
 - **Learning Curves**: Generate training and validation error curves across different dataset sizes
@@ -62,9 +124,13 @@ The Bias-Variance Diagnostic Tool helps machine learning practitioners identify 
 ```
 bias-variance-diagnoser/
 ├── README.md                      # Project documentation
+├── LIBRARY_USAGE.md              # Complete library API documentation (NEW!)
 ├── pyproject.toml                 # Project configuration and dependencies
 ├── .gitignore                     # Git ignore patterns
 ├── run.py                         # CLI entry point
+│
+├── examples/                      # Usage examples (NEW!)
+│   └── example_library_usage.py  # Complete library examples
 │
 ├── configs/                       # Configuration files
 │   ├── default.yaml               # Generic default settings
@@ -87,7 +153,8 @@ bias-variance-diagnoser/
 │
 ├── src/                           # Source code
 │   └── diagnoser/                 # Main package
-│       ├── __init__.py
+│       ├── __init__.py            # Public API exports (UPDATED!)
+│       ├── api.py                 # Library API - run_diagnosis() (NEW!)
 │       ├── diagnoser.py           # Command-line interface
 │       ├── pipeline.py            # Main orchestration logic
 │       │
@@ -134,7 +201,8 @@ bias-variance-diagnoser/
 ├── tests/                         # Test suite
 │   ├── test_learning_curve.py     # Learning curve tests
 │   ├── test_diagnosis_rules.py    # Diagnosis logic tests
-│   └── test_metrics.py            # Metrics tests
+│   ├── test_metrics.py            # Metrics tests
+│   └── test_library_api.py        # Library API tests (NEW!)
 │
 ├── outputs/                       # Generated outputs (auto-created)
 │   ├── figures/                   # Saved plots (PNG/PDF)
@@ -193,9 +261,44 @@ pip install -e ".[nn]"
 
 ## Quick Start
 
-### Using the Command-Line Interface (Recommended)
+### As a Library (Recommended)
 
-The easiest way to use the tool is through the CLI:
+Install and use in your own projects:
+
+```bash
+# Install the package
+pip install -e .
+```
+
+```python
+# Import and use
+from diagnoser import run_diagnosis
+
+# Run diagnosis on your dataset
+result = run_diagnosis(
+    dataset_path="data/mydata.csv",
+    model_name="ridge_regression",      # or "tree_classifier", "logistic_regression", etc.
+    label_column="target",               # your target column name
+    output_dir="results/"                # where to save outputs
+)
+
+# Access results
+print(f"Diagnosis: {result.diagnosis_label}")
+print(f"Final train error: {result.final_train_error:.4f}")
+print(f"Final val error: {result.final_val_error:.4f}")
+print(f"Recommendations: {result.recommendations}")
+
+# Save to JSON
+import json
+with open("my_diagnosis.json", "w") as f:
+    json.dump(result.to_dict(), f, indent=2)
+```
+
+**See [LIBRARY_USAGE.md](LIBRARY_USAGE.md) for comprehensive library documentation and [examples/example_library_usage.py](examples/example_library_usage.py) for working examples.**
+
+### Using the Command-Line Interface
+
+The easiest way to use the tool from command line:
 
 #### List available data files and models
 
@@ -260,6 +363,91 @@ python run.py -h
 - `-h, --help`: Show help message
 
 ## Usage
+
+### Library API
+
+**The recommended way to use this tool in your projects.**
+
+#### Basic Usage
+
+```python
+from diagnoser import run_diagnosis
+
+result = run_diagnosis(
+    dataset_path="path/to/data.csv",
+    model_name="ridge_regression",
+    label_column="target",
+    output_dir="results/"
+)
+
+print(f"Diagnosis: {result.diagnosis_label}")  # "high_bias", "high_variance", or "balanced"
+print(f"Recommendations: {result.recommendations}")
+```
+
+#### API Reference
+
+**Function: `run_diagnosis()`**
+
+Parameters:
+- `dataset_path` (str, required): Path to your CSV dataset
+- `model` (str, optional): Path to pre-trained model file (.pkl or .h5)
+- `model_name` (str, optional): Model to train - "tree_classifier", "logistic_regression", "ridge_regression", "lasso_regression", "linear_regression", "nn_classifier"
+- `label_column` (str): Target column name (default: "Class")
+- `config_path` (str, optional): Path to custom YAML config
+- `output_dir` (str, optional): Directory for outputs (plots, reports, models)
+- `save_model` (bool): Save trained model (default: False)
+- `save_plot` (bool): Save learning curve plot (default: True)
+- `save_report` (bool): Save JSON report (default: True)
+
+Returns `DiagnosisResult` dataclass with:
+- `sizes`, `train_errors`, `val_errors`: Learning curve data
+- `final_train_error`, `final_val_error`, `error_gap`: Final metrics
+- `diagnosis_label`: "high_bias", "high_variance", or "balanced"
+- `recommendations`: Actionable suggestions
+- `data_quality_warnings`, `sanity_check_warnings`: Issues detected
+- `plot_path`, `report_path`, `model_path`: Paths to saved artifacts
+
+#### Example: Using Pre-trained Model
+
+```python
+result = run_diagnosis(
+    dataset_path="new_data.csv",
+    model="path/to/saved_model.pkl",  # Use existing model
+    label_column="target"
+)
+```
+
+#### Example: Custom Configuration
+
+```python
+result = run_diagnosis(
+    dataset_path="data.csv",
+    model_name="ridge_regression",
+    label_column="price",
+    config_path="my_custom_config.yaml",
+    output_dir="diagnosis_results/",
+    save_model=True
+)
+```
+
+#### Example: Model Comparison
+
+```python
+models = ["tree_classifier", "ridge_regression", "logistic_regression"]
+results = {}
+
+for model_name in models:
+    result = run_diagnosis(
+        dataset_path="data.csv",
+        model_name=model_name,
+        label_column="target",
+        output_dir=f"results/{model_name}"
+    )
+    results[model_name] = result
+    print(f"{model_name}: gap={result.error_gap:.4f}, diagnosis={result.diagnosis_label}")
+```
+
+**See [LIBRARY_USAGE.md](LIBRARY_USAGE.md) for comprehensive library documentation and [examples/example_library_usage.py](examples/example_library_usage.py) for working examples.**
 
 ### Command Line Interface
 

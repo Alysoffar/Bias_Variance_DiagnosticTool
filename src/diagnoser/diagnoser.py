@@ -2,7 +2,11 @@ import argparse
 import os
 import sys
 from pathlib import Path
-from pipeline import load_config, run
+
+try:
+    from .pipeline import load_config, run
+except ImportError:
+    from pipeline import load_config, run
 
 
 def find_data_files(data_dir="data/raw"):

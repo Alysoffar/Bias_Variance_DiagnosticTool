@@ -1,6 +1,10 @@
 import numpy as np
-from models.builder import build_model
-from metrics.metrics import classification_error, regression_error
+try:
+    from ..models.builder import build_model
+    from ..metrics.metrics import classification_error, regression_error
+except ImportError:
+    from models.builder import build_model
+    from metrics.metrics import classification_error, regression_error
 
 
 def check_split_overlap(X_train, X_val, max_check_rows=2000):

@@ -4,16 +4,29 @@ import yaml
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_breast_cancer, load_diabetes
-from curves.learning_curve import learning_curve
-from data.loader import load_data, detect_task_type
-from data.processing import clean_data, save_cleaned_data
-from metrics.metrics import classification_error, regression_error
-from diagnosis.rules import diagnosis_rules
-from diagnosis.recommendations import recommendation
-from diagnosis.data_quality import check_data_quality
-from reporting.plots import plot_learning_curve
-from reporting.report import report_findings
-from checks.sanity_checks import run_sanity_checks
+
+try:
+    from .curves.learning_curve import learning_curve
+    from .data.loader import load_data, detect_task_type
+    from .data.processing import clean_data, save_cleaned_data
+    from .metrics.metrics import classification_error, regression_error
+    from .diagnosis.rules import diagnosis_rules
+    from .diagnosis.recommendations import recommendation
+    from .diagnosis.data_quality import check_data_quality
+    from .reporting.plots import plot_learning_curve
+    from .reporting.report import report_findings
+    from .checks.sanity_checks import run_sanity_checks
+except ImportError:
+    from curves.learning_curve import learning_curve
+    from data.loader import load_data, detect_task_type
+    from data.processing import clean_data, save_cleaned_data
+    from metrics.metrics import classification_error, regression_error
+    from diagnosis.rules import diagnosis_rules
+    from diagnosis.recommendations import recommendation
+    from diagnosis.data_quality import check_data_quality
+    from reporting.plots import plot_learning_curve
+    from reporting.report import report_findings
+    from checks.sanity_checks import run_sanity_checks
 
 
 def load_config(default_path: str, model_path: str) -> dict:

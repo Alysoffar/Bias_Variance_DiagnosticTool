@@ -87,7 +87,7 @@ Repository = "https://github.com/yourusername/bias-variance-diagnoser.git"
 diagnoser = "diagnoser.diagnoser:main"
 
 [tool.setuptools]
-packages = ["diagnoser"]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
