@@ -23,6 +23,7 @@ from .diagnosis.data_quality import check_data_quality
 from .reporting.plots import plot_learning_curve
 from .reporting.report import report_findings
 from .utils.seed import set_seed
+from .metrics.metrics import classification_metrics
 
 try:
     import joblib
@@ -49,10 +50,14 @@ class DiagnosisResult:
     diagnosis_label: str  # "high_bias", "high_variance", or "balanced"
     diagnosis_details: Dict[str, Any]  # Full diagnosis dict
     recommendations: str  # Actionable recommendations
+
     
     # Data quality
     data_quality_warnings: list  # List of warning strings
     sanity_check_warnings: list  # List of sanity check warning strings
+
+    # Final evaluation metrics (classification only)
+    final_metrics: Optional[Dict[str, Any]] = None
     
     # Artifacts
     plot_path: Optional[str] = None  # Path to learning curve plot
@@ -408,7 +413,7 @@ def run_diagnosis(
                 print(f"   - {warning}")
         
         # Generate learning curve
-        sizes, train_errors, val_errors = learning_curve(
+        sizes, train_errors, val_errors, final_outputs = learning_curve(
             config, X_train, y_train, X_val, y_val
         )
         
@@ -421,6 +426,21 @@ def run_diagnosis(
         
         # Run sanity checks
         sanity_warnings = run_sanity_checks(config, X_train, y_train, X_val, y_val)
+
+        final_metrics = None
+        if task_type == "classification":
+            final_metrics = {
+                "train": classification_metrics(
+                    final_outputs.get("y_train_true"),
+                    final_outputs.get("y_train_pred"),
+                    final_outputs.get("y_train_score")
+                ),
+                "val": classification_metrics(
+                    final_outputs.get("y_val_true"),
+                    final_outputs.get("y_val_pred"),
+                    final_outputs.get("y_val_score")
+                )
+            }
         
         # Prepare artifact paths
         plot_path = None
@@ -443,7 +463,8 @@ def run_diagnosis(
                 recommendations_text,
                 out_path=report_path,
                 warnings=sanity_warnings,
-                data_errors=data_quality_warnings
+                data_errors=data_quality_warnings,
+                final_metrics=final_metrics
             )
         
         if save_model and not is_pretrained:
@@ -468,6 +489,7 @@ def run_diagnosis(
             diagnosis_label=diagnosis_label,
             diagnosis_details=diagnosis_dict,
             recommendations=recommendations_text,
+            final_metrics=final_metrics,
             data_quality_warnings=data_quality_warnings,
             sanity_check_warnings=sanity_warnings,
             plot_path=plot_path,

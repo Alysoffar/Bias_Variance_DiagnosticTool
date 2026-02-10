@@ -2,7 +2,18 @@ import os
 import json
 from datetime import datetime
 
-def report_findings(diagnosis: str, train_errors: list, val_errors: list, sizes: list, recommendation: str,out_path: str = None, warnings: list = None, data_errors: list = None):
+
+def report_findings(
+    diagnosis: str,
+    train_errors: list,
+    val_errors: list,
+    sizes: list,
+    recommendation: str,
+    out_path: str = None,
+    warnings: list = None,
+    data_errors: list = None,
+    final_metrics: dict = None
+):
     report = {
         "timestamp": datetime.now().isoformat(),
         "diagnosis": diagnosis,
@@ -11,10 +22,11 @@ def report_findings(diagnosis: str, train_errors: list, val_errors: list, sizes:
             "train_errors": train_errors,
             "val_errors": val_errors
         },
+        "final_metrics": final_metrics,
         "recommendation": recommendation,
         "warnings": warnings or None,
         "data_errors": data_errors or None
-    }   
+    }
 
     if out_path:
         os.makedirs(os.path.dirname(out_path), exist_ok=True)

@@ -5,7 +5,6 @@ from .sklearn_models import (
     build_ridge_regression,
     build_lasso_regression
 )
-from .nn_models import build_nn_classifier
 
 
 def build_model(model_type, config, input_dim=None):
@@ -28,6 +27,12 @@ def build_model(model_type, config, input_dim=None):
     elif model_type == "nn_classifier":
         if input_dim is None:
             raise ValueError("input_dim must be provided for nn_classifier")
+        try:
+            from .nn_models import build_nn_classifier
+        except Exception as exc:
+            raise ImportError(
+                "TensorFlow is required for nn_classifier. Install with: pip install tensorflow"
+            ) from exc
         return build_nn_classifier(config, input_dim)
     
     else:

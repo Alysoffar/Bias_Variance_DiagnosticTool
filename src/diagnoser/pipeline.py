@@ -9,7 +9,7 @@ try:
     from .curves.learning_curve import learning_curve
     from .data.loader import load_data, detect_task_type
     from .data.processing import clean_data, save_cleaned_data
-    from .metrics.metrics import classification_error, regression_error
+    from .metrics.metrics import classification_error, regression_error, classification_metrics
     from .diagnosis.rules import diagnosis_rules
     from .diagnosis.recommendations import recommendation
     from .diagnosis.data_quality import check_data_quality
@@ -20,7 +20,7 @@ except ImportError:
     from curves.learning_curve import learning_curve
     from data.loader import load_data, detect_task_type
     from data.processing import clean_data, save_cleaned_data
-    from metrics.metrics import classification_error, regression_error
+    from metrics.metrics import classification_error, regression_error, classification_metrics
     from diagnosis.rules import diagnosis_rules
     from diagnosis.recommendations import recommendation
     from diagnosis.data_quality import check_data_quality
@@ -121,7 +121,7 @@ def run(config):
         X_train, X_val, Y_train, Y_val = train_test_split(
             X, Y, test_size=0.2, random_state=42)
         
-        sizes, train_errs, val_errs = learning_curve(
+        sizes, train_errs, val_errs, final_outputs = learning_curve(
             config, X_train, Y_train, X_val, Y_val
         )
 
@@ -129,6 +129,21 @@ def run(config):
         final_val_error = val_errs[-1]
 
         diagnosis = diagnosis_rules(final_train_error, final_val_error, config)
+
+        final_metrics = None
+        if task_type == "classification":
+            final_metrics = {
+                "train": classification_metrics(
+                    final_outputs.get("y_train_true"),
+                    final_outputs.get("y_train_pred"),
+                    final_outputs.get("y_train_score")
+                ),
+                "val": classification_metrics(
+                    final_outputs.get("y_val_true"),
+                    final_outputs.get("y_val_pred"),
+                    final_outputs.get("y_val_score")
+                )
+            }
 
 
             
@@ -150,9 +165,11 @@ def run(config):
         
         report_findings(
             diagnosis, train_errs, val_errs, sizes,
-            recommendation(diagnosis["label"]),out_path=r"D:\\WORK\\projects\\Bias_Variance_DiagnosticTool\\outputs\\reports\\report.json",
+            recommendation(diagnosis["label"]),
+            out_path=r"D:\\WORK\\projects\\Bias_Variance_DiagnosticTool\\outputs\\reports\\report.json",
             warnings=warnings,
-            data_errors=quality_warnings
+            data_errors=quality_warnings,
+            final_metrics=final_metrics
         )
 
     else:

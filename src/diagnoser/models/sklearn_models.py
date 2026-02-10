@@ -6,6 +6,7 @@ def build_tree_classifier(config):
     return DecisionTreeClassifier(
         max_depth=config.get("max_depth", None),
         min_samples_split=config.get("min_samples_split", 2),
+        class_weight=config.get("class_weight", None),
         random_state=config.get("random_state", 42)
     )
 
@@ -14,6 +15,7 @@ def build_logistic_regression(config):
     return LogisticRegression(
         C=config.get("C", 1.0),
         max_iter=config.get("max_iter", 100),
+        class_weight=config.get("class_weight", None),
         random_state=config.get("random_state", 42)
     )
 

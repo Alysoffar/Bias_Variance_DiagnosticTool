@@ -132,6 +132,9 @@ dmypy.json
 
 # Project-specific
 outputs/
+example_outputs/
+test_outputs/
+paper/
 data/raw/
 data/processed/
 *.pkl
