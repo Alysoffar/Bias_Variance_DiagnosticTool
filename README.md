@@ -45,6 +45,17 @@ The Bias-Variance Diagnoser is now a **reusable Python library**! You can instal
 - `examples/example_library_usage.py` - 6 working examples
 - `tests/test_library_api.py` - Library API test suite
 
+### Research Benchmarks (v0.2.1)
+
+**New Capabilities:**
+- [OK] **Benchmark suite** with classical baselines and runtime tracking
+- [OK] **Sensitivity + ablation** scripts with LaTeX-ready tables
+- [OK] **Expanded metrics**: AUC-ROC, PR-AUC, F1, Precision/Recall, FPR in reports
+
+**New Files:**
+- `scripts/run_benchmarks.py` - Benchmark experiments and runtime tables
+- `scripts/run_sensitivity_ablation.py` - Single-factor sensitivity + ablation
+
 **Quick Example:**
 ```python
 from diagnoser import run_diagnosis
@@ -99,7 +110,7 @@ By automatically generating learning curves and running diagnostic checks, this 
 
 - **Learning Curve Generation**: Automatically train models on varying amounts of training data and measure performance
 - **Bias-Variance Classification**: Categorize models into high bias, high variance, or balanced based on error patterns
-- **Multiple Metrics**: Support for classification error, mean squared error, and custom metrics
+- **Multiple Metrics**: Classification error, MSE, AUC-ROC, PR-AUC, F1, Precision/Recall, and FPR
 - **Visualization**: Generate publication-ready learning curve plots
 - **JSON Reports**: Export detailed diagnostic results for further analysis
 
