@@ -43,7 +43,7 @@ def label_shuffle_check(config, X_train, y_train, X_val, y_val):
     )
 
     # train
-    if config["model_type"] == "nn":
+    if str(config["model_type"]).startswith("nn"):
         epochs = config["model"].get("epochs", 10)
         batch_size = config["model"].get("batch_size", 32)
         model.fit(X_train, y_shuffled, epochs=epochs, batch_size=batch_size, verbose=0)
@@ -106,7 +106,7 @@ def overfit_tiny_batch_check(config, X_train, y_train, n_samples=30):
         input_dim=X_train.shape[1],
     )
 
-    if config["model_type"] == "nn":
+    if str(config["model_type"]).startswith("nn"):
         epochs = max(30, config["model"].get("epochs", 20))
         batch_size = min(config["model"].get("batch_size", 32), n_samples)
         model.fit(X_small, y_small, epochs=epochs, batch_size=batch_size, verbose=0)

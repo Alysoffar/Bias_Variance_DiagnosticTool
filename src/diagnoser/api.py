@@ -472,7 +472,7 @@ def run_diagnosis(
             os.makedirs(model_dir, exist_ok=True)
             
             if hasattr(model_obj, 'save'):  # Keras model
-                model_path = os.path.join(model_dir, "final_model.h5")
+                model_path = os.path.join(model_dir, "final_model.keras")
                 model_obj.save(model_path)
             else:  # scikit-learn model
                 model_path = os.path.join(model_dir, "final_model.pkl")

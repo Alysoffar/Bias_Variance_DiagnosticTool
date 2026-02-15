@@ -91,7 +91,7 @@ def learning_curve(config, X_train, y_train, X_val, y_val):
         print("Model training and evaluation pipeline appears to be functioning correctly.")
         
         if config["model_type"].startswith("nn"):
-            save_keras_model(model, path=r"D:\\WORK\\projects\\Bias_Variance_DiagnosticTool\\outputs\\models\\final_model.h5")
+            save_keras_model(model, path=r"D:\\WORK\\projects\\Bias_Variance_DiagnosticTool\\outputs\\models\\final_model.keras")
 
         else:
             save_sklearn_model(model,path=r"D:\\WORK\\projects\\Bias_Variance_DiagnosticTool\\outputs\\models\\final_model.pkl")
@@ -103,7 +103,7 @@ def save_sklearn_model(model, path):
     joblib.dump(model, path)
 
 def save_keras_model(model, path):
-    os.makedirs(path, exist_ok=True)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     model.save(path)
            
        

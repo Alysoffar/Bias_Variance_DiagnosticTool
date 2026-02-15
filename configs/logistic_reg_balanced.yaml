@@ -1,0 +1,21 @@
+# configs/logistic_reg_balanced.yaml - Logistic regression with class weighting for imbalanced data
+model_type: logistic_regression
+
+model:
+  C: 1.0
+  max_iter: 5000
+  solver: 'lbfgs'
+  class_weight: 'balanced'  # Automatically adjust weights inversely proportional to class frequencies
+
+data_path: "data/raw/creditcard.csv"
+target_column: "Class"
+drop_columns: ["Time"]
+
+learning_curve:
+  sizes: [0.1, 0.3, 0.5, 0.7, 1.0]
+
+diagnosis:
+  gap_threshold: 0.1
+  high_error_threshold: 0.3
+
+random_seed: 42

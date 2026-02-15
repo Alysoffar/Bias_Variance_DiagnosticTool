@@ -53,8 +53,8 @@ The Bias-Variance Diagnoser is now a **reusable Python library**! You can instal
 - [OK] **Expanded metrics**: AUC-ROC, PR-AUC, F1, Precision/Recall, FPR in reports
 
 **New Files:**
-- `scripts/run_benchmarks.py` - Benchmark experiments and runtime tables
-- `scripts/run_sensitivity_ablation.py` - Single-factor sensitivity + ablation
+- `evaluation/run_benchmarks.py` - Benchmark experiments and runtime tables
+- `evaluation/run_sensitivity_ablation.py` - Single-factor sensitivity + ablation
 
 **Quick Example:**
 ```python
@@ -221,9 +221,18 @@ bias-variance-diagnoser/
 │   ├── models/                    # Saved model artifacts
 │   └── processed/                 # Processed data exports
 │
+├── evaluation/                    # Evaluation scripts
+│   ├── eval_builtin_datasets.py   # Built-in dataset evaluation
+│   ├── run_benchmarks.py          # Benchmark experiments and runtime tables
+│   ├── run_sensitivity_ablation.py# Single-factor sensitivity + ablation
+│   ├── forced_testing/            # Forced-run experiments
+│   │   └── force_run_imbalanced.py# Force run on imbalanced datasets
+│   └── paper/                     # Paper helper scripts
+│       └── reorganize_paper.py    # Paper structure helper
+│
 └── scripts/                       # Helper scripts
-    ├── run_demo.sh                # Quick demo runner
-    └── download_data.sh           # Data download script
+  ├── run_demo.sh                # Quick demo runner
+  └── download_data.sh           # Data download script
 ```
 
 ## Installation
